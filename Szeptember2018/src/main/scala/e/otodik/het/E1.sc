@@ -1,3 +1,5 @@
+import scala.collection.immutable
+
 val elvártEredmény =
   """00:00:00
     |00:01:00
@@ -23,11 +25,31 @@ List(
   , "11:00:00PM"
   , "11:59:00PM"
 )
-  .slice(0, 1)
+  .slice(0, 10)
   .map(timeConversion).foreach(println)
 
 def timeConversion(s: String): String = {
-  val time = s.replace(":", "").grouped(2).toList
-  println(time)
-  s
+  val time: immutable.List[String] = s.replace(":", "").grouped(2).toList
+  val hour = time(0).toInt
+  val minute = time(1).toInt
+  val sec = time(2).toInt
+  val ampm = time(3)
+  //  println(time)
+  if (ampm == "AM") {
+    if (hour == 12) {
+      hour - 12 + ":" + minute + ":" + sec
+    }
+    else {
+      hour + ":" + minute + ":" + sec
+    }
+  }
+  else {
+    if (hour == 12) {
+      hour + ":" + minute + ":" + sec
+    }
+    else {
+      hour + 12 + ":" + minute + ":" + sec
+    }
+  }
+  //s
 }
